@@ -70,6 +70,7 @@ public class ManagePersonServlet extends HttpServlet {
 
         // Диспетчеры для передачи управления на разные JSP (разные представления (view)).
         RequestDispatcher dispatcher_for_manager = request.getRequestDispatcher("/ManagePerson.jsp");
+        RequestDispatcher dispatcher_for_number_manager = request.getRequestDispatcher("/ManagePhoneNumber.jsp");
         RequestDispatcher dispatcher_for_add = request.getRequestDispatcher("/AddPerson.jsp");
         RequestDispatcher dispatcher_for_list = request.getRequestDispatcher("/List.jsp");
 
@@ -101,7 +102,7 @@ public class ManagePersonServlet extends HttpServlet {
                     request.setAttribute("jsp_parameters", jsp_parameters);
 
                     // Передача запроса в JSP.
-                    dispatcher_for_add.forward(request, response);
+                    dispatcher_for_manager.forward(request, response);
                     break;
 
                 // Редактирование записи.
@@ -147,6 +148,40 @@ public class ManagePersonServlet extends HttpServlet {
                 case "return_to_list":
 
                     request.setAttribute("jsp_parameters", jsp_parameters);
+                    dispatcher_for_list.forward(request, response);
+                    break;
+
+                // Возвращение к редактированию данных о человеке (из страницы редактирования\добавления номера)
+                case "return_to_manage_person":
+
+                    request.setAttribute("jsp_parameters", jsp_parameters);
+                    dispatcher_for_manager.forward(request, response);
+                    break;
+
+                // Переход на страницу редактирования номера пользователя
+                case "manage_person_number":
+                    request.setAttribute("jsp_parameters", jsp_parameters);
+                    dispatcher_for_number_manager.forward(request, response);
+                    break;
+
+                // Удаление номера
+                case "delete_number":
+
+                    // Если номер удалось удалить...
+                    if (phoneBook.deletePersonNumber(id)) {
+                        jsp_parameters.put("current_action_result", "DELETION_SUCCESS");
+                        jsp_parameters.put("current_action_result_label", "Удаление номера выполнено успешно");
+                    }
+                    // Если запись не удалось удалить (например, такой записи нет)...
+                    else {
+                        jsp_parameters.put("current_action_result", "DELETION_FAILURE");
+                        jsp_parameters.put("current_action_result_label", "Ошибка удаления (возможно, номер не найден)");
+                    }
+
+                    // Установка параметров JSP.
+                    request.setAttribute("jsp_parameters", jsp_parameters);
+
+                    // Передача запроса в JSP.
                     dispatcher_for_list.forward(request, response);
                     break;
             }

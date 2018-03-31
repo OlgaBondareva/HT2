@@ -6,9 +6,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Управление данными о человеке</title>
+    <link href="${pageContext.request.contextPath}styles/main.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-
 <%
     HashMap<String, String> jsp_parameters = new HashMap<>();
     Person person = new Person();
@@ -61,13 +61,23 @@
         <tr>
             <td>Телефоны:</td>
             <td>
-                <label>
-<textarea name="phones" cols="40" rows="5"><%
-    for (String phone : person.getPhones().values()) {
-        out.write(phone + "\n");
-    }
-%></textarea>
-                </label>
+                <%--<label>--%>
+                <%--<textarea name="phones" cols="40" rows="5"><%
+                    for (String phone : person.getPhones().values()) {
+                        out.write("\n" + phone);
+                    }
+                %>
+                            </textarea>--%>
+                <%
+                    for (String phone : person.getPhones().values()) {
+                %>
+                <%=phone%><a href="<%=request.getContextPath()%>/?action=manage_person_number"> Редактировать</a>
+                          <a href="<%=request.getContextPath()%>/?action=delete_number"> Удалить</a><br/>
+                <%
+                    }
+                %>
+                <%--</label>--%>
+
             </td>
         </tr>
         <tr>
@@ -75,6 +85,10 @@
                 <input type="submit" name="<%=jsp_parameters.get("next_action")%>"
                        value="<%=jsp_parameters.get("next_action_label")%>"/>
             </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><a href="<%=request.getContextPath()%>/?action=return_to_list">Вернуться к
+                списку</a></td>
         </tr>
     </table>
 </form>

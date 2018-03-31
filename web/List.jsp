@@ -7,12 +7,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Список людей</title>
+    <link href="${pageContext.request.contextPath}styles/main.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 
 <%
     //PhoneBook phoneBook = PhoneBook.getInstance();
-    String user_message = "";
+    String user_message;
     HashMap<String, String> jsp_parameters = new HashMap<>();
     PhoneBook phoneBook = (PhoneBook) request.getAttribute("phoneBook");
 
@@ -23,7 +24,7 @@
     user_message = jsp_parameters.get("current_action_result_label");
 %>
 
-<table align="center" border="1" width="90%">
+<table class="main-table" align="center" border="1" width="90%">
 
     <%
         if ((user_message != null) && (!user_message.equals(""))) {

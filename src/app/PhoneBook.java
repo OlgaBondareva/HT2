@@ -106,6 +106,20 @@ public class PhoneBook {
         }
     }
 
+    // Удаление номера
+    public boolean deletePersonNumber(String id) {
+        if ((id != null) && (!id.equals("null"))) {
+            int filtered_id = Integer.parseInt(id);
+
+            Integer affected_rows = this.db.changeDBData("DELETE FROM `phone` WHERE `id`=" + filtered_id);
+
+            // Если удаление прошло успешно...
+            return affected_rows > 0;
+        } else {
+            return false;
+        }
+    }
+
     // +++++++++++++++++++++++++++++++++++++++++
     // Геттеры и сеттеры
     public HashMap<String, Person> getContents() {
